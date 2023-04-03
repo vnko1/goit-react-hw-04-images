@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { createPortal } from 'react-dom';
+// import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import {
   Overlay,
@@ -10,7 +10,7 @@ import {
   ArrowForward,
 } from './Modal.styled';
 
-const modal = document.querySelector('#modal-root');
+// const modal = document.querySelector('#modal-root');
 
 export const Modal = props => {
   const {
@@ -46,7 +46,7 @@ export const Modal = props => {
     }
   };
 
-  return createPortal(
+  return (
     <Overlay onClick={onMouseClick}>
       <ModalContainer>
         <CurrentPageText>{`${currentPosition}/${totalImages}`}</CurrentPageText>
@@ -58,8 +58,7 @@ export const Modal = props => {
           <ArrowForward />
         </Button>
       </ModalContainer>
-    </Overlay>,
-    modal
+    </Overlay>
   );
 };
 
@@ -73,3 +72,19 @@ Modal.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   changeCurrentIndex: PropTypes.func.isRequired,
 };
+
+// createPortal(
+//   <Overlay onClick={onMouseClick}>
+//     <ModalContainer>
+//       <CurrentPageText>{`${currentPosition}/${totalImages}`}</CurrentPageText>
+//       <Button type="button" onClick={() => changeCurrentIndex(-1)}>
+//         <ArrowBack />
+//       </Button>
+//       <img src={largeImageURL} alt={tags} width="1280" />
+//       <Button type="button" onClick={() => changeCurrentIndex(1)}>
+//         <ArrowForward />
+//       </Button>
+//     </ModalContainer>
+//   </Overlay>,
+//   modal
+// );
