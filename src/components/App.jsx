@@ -50,7 +50,7 @@ export const App = () => {
         setStatus(STATUS.RESOLVED);
         setTimeout(() => {
           scroll.scrollToBottom();
-        }, 500);
+        }, 1000);
       } catch (error) {
         setError(error);
         setStatus(STATUS.ERROR);
