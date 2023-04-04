@@ -5,7 +5,7 @@ import { ImageGalleryList, ImageGalleryItems } from './ImageGallery.styled';
 export const ImageGallery = ({ images, setIndex, toggleModal }) => {
   return (
     <ImageGalleryList>
-      {images.map(({ id, tags, largeImageURL }) => {
+      {images.map(({ id, ...otherProps }) => {
         return (
           <ImageGalleryItems
             key={id}
@@ -14,7 +14,7 @@ export const ImageGallery = ({ images, setIndex, toggleModal }) => {
               toggleModal();
             }}
           >
-            <ImageGalleryItem tags={tags} largeImageURL={largeImageURL} />
+            <ImageGalleryItem {...otherProps} />
           </ImageGalleryItems>
         );
       })}
@@ -26,8 +26,6 @@ ImageGallery.propTypes = {
   images: PropTypes.arrayOf(
     shape({
       id: PropTypes.number.isRequired,
-      tags: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
   setIndex: PropTypes.func.isRequired,

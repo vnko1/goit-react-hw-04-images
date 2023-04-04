@@ -48,6 +48,7 @@ export const App = () => {
         const { hits } = await fetchImage(query, page, controller);
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
+
         setTimeout(() => {
           scroll.scrollToBottom();
         }, 1000);
