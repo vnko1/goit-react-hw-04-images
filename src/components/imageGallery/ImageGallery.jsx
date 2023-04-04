@@ -16,14 +16,18 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
   const currentImage = images[currentIndex];
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchImages = async () => {
       setStatus(STATUS.PENDING);
       setError(null);
 
       try {
-        const { totalHits, hits } = await fetchImage(querySearch, nextPage);
+        const { totalHits, hits } = await fetchImage(
+          querySearch,
+          nextPage,
+          controller
+        );
         totalImageHits.current = totalHits;
-
         setImages(normalizedData(hits));
         setStatus(STATUS.RESOLVED);
       } catch (error) {
@@ -36,7 +40,7 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
       setError(null);
 
       try {
-        const { hits } = await fetchImage(querySearch, nextPage);
+        const { hits } = await fetchImage(querySearch, nextPage, controller);
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
 
@@ -49,12 +53,12 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
 
     if (querySearch !== '' && nextPage === 1) {
       fetchImages();
-      return;
-    }
-    if (nextPage > 1) {
+    } else if (nextPage > 1) {
       loadMoreImages();
-      return;
     }
+    return () => {
+      controller.abort();
+    };
   }, [querySearch, nextPage]);
 
   const normalizedData = data => {
