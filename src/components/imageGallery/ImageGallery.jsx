@@ -30,7 +30,6 @@ ImageGallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
-
   setIndex: PropTypes.func.isRequired,
   toggleModal: PropTypes.func.isRequired,
 };
