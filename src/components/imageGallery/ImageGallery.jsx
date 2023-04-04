@@ -84,19 +84,16 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
   return (
     <>
       <ImageGalleryList>
-        {images.map(image => {
+        {images.map(({ id, tags, largeImageURL }) => {
           return (
             <ImageGalleryItems
-              key={image.id}
+              key={id}
               onClick={() => {
-                setIndex(image.id);
+                setIndex(id);
                 toggleModal();
               }}
             >
-              <ImageGalleryItem
-                tags={image.tags}
-                largeImageURL={image.largeImageURL}
-              />
+              <ImageGalleryItem tags={tags} largeImageURL={largeImageURL} />
             </ImageGalleryItems>
           );
         })}
