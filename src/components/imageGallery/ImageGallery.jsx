@@ -43,8 +43,9 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
         const { hits } = await fetchImage(querySearch, nextPage, controller);
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
-
-        scroll.scrollToBottom();
+        setTimeout(() => {
+          scroll.scrollToBottom();
+        }, 250);
       } catch (error) {
         setError(error);
         setStatus(STATUS.ERROR);
