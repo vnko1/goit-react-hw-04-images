@@ -19,6 +19,7 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
     const fetchImages = async () => {
       setStatus(STATUS.PENDING);
       setError(null);
+
       try {
         const { totalHits, hits } = await fetchImage(querySearch, nextPage);
         totalImageHits.current = totalHits;
@@ -33,10 +34,12 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
     const loadMoreImages = async () => {
       setStatus(STATUS.PENDING);
       setError(null);
+
       try {
         const { hits } = await fetchImage(querySearch, nextPage);
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
+
         scroll.scrollToBottom();
       } catch (error) {
         setError(error);
