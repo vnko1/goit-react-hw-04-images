@@ -45,7 +45,7 @@ export const ImageGallery = ({ querySearch, nextPage, loadMore }) => {
         setStatus(STATUS.RESOLVED);
         setTimeout(() => {
           scroll.scrollToBottom();
-        }, 250);
+        }, 500);
       } catch (error) {
         setError(error);
         setStatus(STATUS.ERROR);
