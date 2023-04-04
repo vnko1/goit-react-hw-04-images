@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
+
 import { ImageGalleryItemImage } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ tags, largeImageURL, onComplete }) => {
+export const ImageGalleryItem = ({ tags, largeImageURL }) => {
   return <ImageGalleryItemImage src={largeImageURL} alt={tags} />;
 };
 
