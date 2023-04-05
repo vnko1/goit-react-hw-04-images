@@ -10,6 +10,8 @@ export const useApp = () => {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
 
+  const currentImage = images[currentIndex];
+
   const toggleModal = () => {
     setShowModal(prev => !prev);
   };
@@ -47,7 +49,7 @@ export const useApp = () => {
     loadMore,
     images,
     setImages,
-
+    currentImage,
     currentIndex,
     setIndex,
     changeCurrentIndex,

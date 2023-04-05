@@ -24,6 +24,7 @@ export const App = () => {
     currentIndex,
     setIndex,
     changeCurrentIndex,
+    currentImage,
     status,
     setStatus,
     showModal,
@@ -33,7 +34,6 @@ export const App = () => {
   } = useApp();
 
   const totalImageHits = useRef(null);
-  const currentImage = images[currentIndex];
 
   useEffect(() => {
     const controller = new AbortController();
