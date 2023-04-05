@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   SearchBar,
   ImageGallery,
@@ -9,18 +9,29 @@ import {
   Message,
 } from './index';
 import { animateScroll as scroll } from 'react-scroll';
-import { STATUS, fetchImage } from 'services';
+import { STATUS, fetchImage, useApp, normalizedData } from 'services';
 import { GlobalStyle } from 'globalStyle/GlobalStyle';
 import { Layout } from './Layout.styled';
 
 export const App = () => {
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [images, setImages] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const [status, setStatus] = useState(STATUS.IDLE);
-  const [showModal, setShowModal] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    query,
+    getQuery,
+    page,
+    loadMore,
+    images,
+    setImages,
+    currentIndex,
+    setIndex,
+    changeCurrentIndex,
+    status,
+    setStatus,
+    showModal,
+    toggleModal,
+    error,
+    setError,
+  } = useApp();
+
   const totalImageHits = useRef(null);
   const currentImage = images[currentIndex];
 
@@ -66,43 +77,7 @@ export const App = () => {
     return () => {
       controller.abort();
     };
-  }, [query, page]);
-
-  const normalizedData = data => {
-    return data.map(({ id, tags, webformatURL, largeImageURL }) => {
-      return { id, tags, webformatURL, largeImageURL };
-    });
-  };
-
-  const setIndex = id => {
-    const index = images.findIndex(image => image.id === id);
-    setCurrentIndex(index);
-  };
-
-  const toggleModal = () => {
-    setShowModal(prev => !prev);
-  };
-
-  const changeCurrentIndex = value => {
-    if (currentIndex + value < 0) {
-      setCurrentIndex(images.length - 1);
-      return;
-    }
-    if (currentIndex + value > images.length - 1) {
-      setCurrentIndex(0);
-      return;
-    }
-    setCurrentIndex(prev => prev + value);
-  };
-
-  const getQuery = value => {
-    setQuery(value);
-    setPage(1);
-  };
-
-  const loadMore = () => {
-    setPage(prev => prev + 1);
-  };
+  }, [query, page, setStatus, setError, setImages]);
 
   return (
     <Layout>
