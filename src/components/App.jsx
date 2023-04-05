@@ -37,29 +37,14 @@ export const App = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    const fetchImages = async () => {
+    const loadImages = async () => {
       setStatus(STATUS.PENDING);
       setError(null);
-
       try {
         const { totalHits, hits } = await fetchImage(query, page, controller);
         totalImageHits.current = totalHits;
-        setImages(normalizedData(hits));
-        setStatus(STATUS.RESOLVED);
-      } catch (error) {
-        setError(error);
-        setStatus(STATUS.ERROR);
-      }
-    };
-    const loadMoreImages = async () => {
-      setStatus(STATUS.PENDING);
-      setError(null);
-
-      try {
-        const { hits } = await fetchImage(query, page, controller);
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
-
         setTimeout(() => {
           scroll.scrollToBottom();
         }, 1000);
@@ -68,16 +53,12 @@ export const App = () => {
         setStatus(STATUS.ERROR);
       }
     };
+    if (query !== '') loadImages();
 
-    if (query !== '' && page === 1) {
-      fetchImages();
-    } else if (page > 1) {
-      loadMoreImages();
-    }
     return () => {
       controller.abort();
     };
-  }, [query, page, setStatus, setError, setImages]);
+  }, [page, query, setError, setImages, setStatus]);
 
   return (
     <Layout>

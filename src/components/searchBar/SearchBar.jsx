@@ -15,6 +15,7 @@ export const SearchBar = ({ getQuery }) => {
     e.preventDefault();
     if (!querySearch.trim()) return;
     getQuery(querySearch.trim().toLowerCase());
+    setQuerySearch('');
   };
 
   return (

@@ -18,6 +18,7 @@ export const useApp = () => {
 
   const getQuery = value => {
     setQuery(value);
+    setImages([]);
     setPage(1);
   };
 
