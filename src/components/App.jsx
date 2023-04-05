@@ -40,11 +40,13 @@ export const App = () => {
     const loadImages = async () => {
       setStatus(STATUS.PENDING);
       setError(null);
+
       try {
         const { totalHits, hits } = await fetchImage(query, page, controller);
         totalImageHits.current = totalHits;
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
+
         setTimeout(() => {
           scroll.scrollToBottom();
         }, 1000);
@@ -53,7 +55,7 @@ export const App = () => {
         setStatus(STATUS.ERROR);
       }
     };
-    if (query !== '') loadImages();
+    if (query) loadImages();
 
     return () => {
       controller.abort();
