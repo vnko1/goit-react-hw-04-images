@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useReducer } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 import {
   SearchBar,
   ImageGallery,
@@ -8,61 +9,91 @@ import {
   Modal,
   Message,
 } from './index';
-import { animateScroll as scroll } from 'react-scroll';
-import { STATUS, fetchImage, useApp, normalizedData } from 'services';
+import {
+  STATUS,
+  INITIAL_STATE,
+  fetchImage,
+  normalizedData,
+  reducer,
+} from 'services';
 import { GlobalStyle } from 'globalStyle/GlobalStyle';
 import { Layout } from './Layout.styled';
 
 export const App = () => {
-  const {
-    query,
-    getQuery,
-    page,
-    loadMore,
-    images,
-    setImages,
-    currentIndex,
-    setIndex,
-    changeCurrentIndex,
-    currentImage,
-    status,
-    setStatus,
-    showModal,
-    toggleModal,
-    error,
-    setError,
-  } = useApp();
+  const [
+    { query, page, images, currentIndex, status, showModal, error },
+    dispatch,
+  ] = useReducer(reducer, INITIAL_STATE);
 
   const totalImageHits = useRef(null);
+  const currentImage = images[currentIndex];
 
   useEffect(() => {
     const controller = new AbortController();
+
     const loadImages = async () => {
-      setStatus(STATUS.PENDING);
-      setError(null);
+      dispatch({
+        type: 'fetchStatus',
+        payload: { status: STATUS.PENDING, error: null },
+      });
 
       try {
         const { totalHits, hits } = await fetchImage(query, page, controller);
         totalImageHits.current = totalHits;
-        setImages(prev => [...prev, ...normalizedData(hits)]);
-        setStatus(STATUS.RESOLVED);
+        dispatch({
+          type: 'fetchStatusResolved',
+          payload: { images: normalizedData(hits), status: STATUS.RESOLVED },
+        });
 
-       if (page>1) { 
-         setTimeout(() => {
-          scroll.scrollToBottom();
-        }, 1000);
-       }
+        if (page > 1) {
+          setTimeout(() => {
+            scroll.scrollToBottom();
+          }, 1000);
+        }
       } catch (error) {
-        setError(error);
-        setStatus(STATUS.ERROR);
+        dispatch({
+          type: 'fetchStatus',
+          payload: { status: STATUS.ERROR, error: error },
+        });
       }
     };
+
     if (query) loadImages();
 
     return () => {
       controller.abort();
     };
-  }, [page, query, setError, setImages, setStatus]);
+  }, [page, query]);
+
+  const toggleModal = () => {
+    dispatch({ type: 'setShowModal' });
+  };
+
+  const getQuery = value => {
+    dispatch({ type: 'getQuery', payload: value });
+  };
+
+  const loadMore = () => {
+    dispatch({ type: 'incrementPage' });
+  };
+
+  const changeCurrentIndex = value => {
+    if (currentIndex + value < 0) {
+      dispatch({ type: 'setIndex', payload: images.length - 1 });
+      return;
+    }
+    if (currentIndex + value > images.length - 1) {
+      dispatch({ type: 'setIndex', payload: 0 });
+      return;
+    }
+
+    dispatch({ type: 'incrementIndex', payload: value });
+  };
+
+  const setIndex = id => {
+    const index = images.findIndex(image => image.id === id);
+    dispatch({ type: 'setIndex', payload: index });
+  };
 
   return (
     <Layout>
