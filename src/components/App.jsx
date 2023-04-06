@@ -47,9 +47,11 @@ export const App = () => {
         setImages(prev => [...prev, ...normalizedData(hits)]);
         setStatus(STATUS.RESOLVED);
 
-        setTimeout(() => {
+       if (page>1) { 
+         setTimeout(() => {
           scroll.scrollToBottom();
         }, 1000);
+       }
       } catch (error) {
         setError(error);
         setStatus(STATUS.ERROR);
