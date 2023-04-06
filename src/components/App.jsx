@@ -65,17 +65,11 @@ export const App = () => {
     };
   }, [page, query]);
 
-  const toggleModal = () => {
-    dispatch({ type: 'setShowModal' });
-  };
+  const toggleModal = () => dispatch({ type: 'setShowModal' });
 
-  const getQuery = value => {
-    dispatch({ type: 'getQuery', payload: value });
-  };
+  const getQuery = value => dispatch({ type: 'getQuery', payload: value });
 
-  const loadMore = () => {
-    dispatch({ type: 'incrementPage' });
-  };
+  const loadMore = () => dispatch({ type: 'incrementPage' });
 
   const changeCurrentIndex = value => {
     if (currentIndex + value < 0) {
