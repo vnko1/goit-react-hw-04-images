@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Overlay,
   ModalContainer,
@@ -7,6 +8,7 @@ import {
   Button,
   ArrowBack,
   ArrowForward,
+  Image,
 } from './Modal.styled';
 
 export const Modal = props => {
@@ -15,8 +17,11 @@ export const Modal = props => {
     currentPosition,
     toggleModal,
     changeCurrentIndex,
+
     image: { largeImageURL, tags },
   } = props;
+
+  // const timeRef = useRef(null);
 
   useEffect(() => {
     const onKeyClick = e => {
@@ -30,10 +35,19 @@ export const Modal = props => {
         changeCurrentIndex(-1);
       }
     };
+
+    // if (timeRef.current) {
+    //   clearTimeout(timeRef.current);
+    // }
     document.addEventListener('keydown', onKeyClick);
+    // setImageIsChanged(false);
+    // timeRef.current = setTimeout(() => {
+    //   changeCurrentIndex(1);
+    // }, 1000);
 
     return () => {
       document.removeEventListener('keydown', onKeyClick);
+      // clearTimeout(timeRef.current);
     };
   }, [changeCurrentIndex, toggleModal]);
 
@@ -50,7 +64,7 @@ export const Modal = props => {
         <Button type="button" onClick={() => changeCurrentIndex(-1)}>
           <ArrowBack />
         </Button>
-        <img src={largeImageURL} alt={tags} width="1280" />
+        <Image src={largeImageURL} alt={tags} width="1280" />
         <Button type="button" onClick={() => changeCurrentIndex(1)}>
           <ArrowForward />
         </Button>
