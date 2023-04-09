@@ -113,6 +113,8 @@ export const App = () => {
           changeCurrentIndex={changeCurrentIndex}
           totalImages={images.length}
           currentPosition={currentIndex + 1}
+          index={currentIndex}
+          images={images}
         />
       )}
       {error && <Message>{`${error}. Try to reload your page!`}</Message>}

@@ -17,7 +17,6 @@ export const Modal = props => {
     currentPosition,
     toggleModal,
     changeCurrentIndex,
-
     image: { largeImageURL, tags },
   } = props;
 
