@@ -1,4 +1,5 @@
 import { useRef, useEffect, useReducer } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { animateScroll as scroll } from 'react-scroll';
 import {
   SearchBar,
@@ -19,12 +20,14 @@ import {
 import { GlobalStyle } from 'globalStyle/GlobalStyle';
 import { Layout } from './Layout.styled';
 
+import './style/styles.css';
+
 export const App = () => {
   const [
     { query, page, images, currentIndex, status, showModal, error },
     dispatch,
   ] = useReducer(reducer, INITIAL_STATE);
-
+  const nodeRef = useRef(null);
   const totalImageHits = useRef(null);
   const currentImage = images[currentIndex];
 
@@ -106,17 +109,23 @@ export const App = () => {
         />
       )}
       {status === STATUS.PENDING && <Loader />}
-      {showModal && (
+      <CSSTransition
+        in={showModal}
+        nodeRef={nodeRef}
+        timeout={300}
+        classNames="appear"
+        unmountOnExit
+      >
         <Modal
           image={currentImage}
           toggleModal={toggleModal}
           changeCurrentIndex={changeCurrentIndex}
           totalImages={images.length}
           currentPosition={currentIndex + 1}
-          index={currentIndex}
-          images={images}
+          showModal={showModal}
+          ref={nodeRef}
         />
-      )}
+      </CSSTransition>
       {error && <Message>{`${error}. Try to reload your page!`}</Message>}
       {!images.length && status === STATUS.RESOLVED && (
         <Message>

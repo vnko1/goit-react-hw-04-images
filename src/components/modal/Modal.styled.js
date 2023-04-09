@@ -1,9 +1,6 @@
-import styled, { keyframes } from 'styled-components';
-import { zoomIn } from 'react-animations';
+import styled from 'styled-components';
 
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
-
-const zoomInAnimation = keyframes`${zoomIn}`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -48,6 +45,4 @@ export const ArrowForward = styled(MdArrowForwardIos)`
   fill: #fff;
 `;
 
-export const Image = styled.img`
-  animation: 1s ${zoomInAnimation};
-`;
+export const Image = styled.img``;
