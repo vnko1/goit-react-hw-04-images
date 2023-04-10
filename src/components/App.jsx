@@ -112,7 +112,7 @@ export const App = () => {
       <CSSTransition
         in={showModal}
         nodeRef={nodeRef}
-        timeout={300}
+        timeout={{ appear: 300, exit: 500 }}
         classNames="appear"
         unmountOnExit
       >
